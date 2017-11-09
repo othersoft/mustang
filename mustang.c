@@ -32,9 +32,9 @@ void PrintMenu(void){
   "   [1] - choose board side,             \n"
   "   [2] - show board,                    \n"
   "   [3] - add my move,                   \n"
-  "   [4] - add oponent move,              \n"
+  "   [4] - add opponent move,             \n"
   "   [5] - remove my previous move,       \n"
-  "   [6] - remove oponent previous move,  \n"
+  "   [6] - remove opponent previous move, \n"
   "   [7] - credits.                       \n"
   "                                        \n"
   " The <storage>: game memory file.       \n"
@@ -128,7 +128,7 @@ void VisualizeBoard(BOARD *B){
 
   fprintf(stderr,
   "                                                                             \n"
-  "               YOUR BOARD:                           OPONENT BOARD:          \n"
+  "               YOUR BOARD:                          OPPONENT BOARD:          \n"
   "                                                                             \n"
   "    +---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+ \n"
   " 8  | %c | %c | %c | %c | %c | %c | %c | %c |      |   |   |   |   |   |   |   |   |\n"
