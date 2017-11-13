@@ -225,6 +225,39 @@ void VisualizeBoard(BOARD *B){
   return;
   }
 
+
+void ChooseBoardSide(PARAM *P, BOARD *B){
+  int try = 0;
+
+  while(1){
+    fprintf(stderr,
+    "                          \n"
+    " Choose board side:       \n"
+    "   [0] - Cancel!          \n"
+    "   [1] - White,           \n"
+    "   [2] - Black.           \n"
+    " Choice: ");
+    scanf("%d", &P->white);
+    fprintf(stderr, "\n");
+    if(P->white == 0)
+      return;
+    if(P->white == 1 || P->white == 2)
+      break;
+    if(try > 1)
+      fprintf(stderr, "Are you stupid or what?!\n\n");
+    fprintf(stderr, "Error: unknown board side! Choose 1 or 2.\n");
+
+    if(try > 6)
+      return;
+    ++try;
+    }
+
+  B->side = P->white;
+
+  return;
+  }
+
+
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // - - - - - - - - - - - - - - - - - M A I N - - - - - - - - - - - - - - - - -
@@ -252,27 +285,7 @@ int main(int argc, char *argv[]){
     break;
 
     case 1:
-    try = 0;
-    while(1){
-      fprintf(stderr, 
-      "                          \n"
-      " Choose board side:       \n"
-      "   [1] - white,           \n"
-      "   [2] - Black.           \n"
-      " Choice: ");
-      scanf("%d", &P->white);
-      fprintf(stderr, "\n");
-      if(P->white == 1 || P->white == 2)
-        break;
-      if(try > 1)
-        fprintf(stderr, "Are you stupid or what?!\n\n");
-      fprintf(stderr, "Error: unknown board side! Choose 1 or 2.\n");
-
-      if(try > 6)
-        return EXIT_SUCCESS;
-      ++try;
-      } 
-
+    ChooseBoardSide(P, B);
     break;
 
     case 2:
