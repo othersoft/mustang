@@ -54,6 +54,46 @@ void PrintVersion(void){
   return;
   }
 
+FILE *Fopen(const char *path, const char *mode)
+  {
+  FILE *file = fopen(path, mode);
+
+  if(file == NULL)
+    {
+    fprintf(stderr, "Error opening: %s (mode %s). Does the file exist?\n",
+    path, mode);
+    exit(1);
+    }
+
+  return file;
+  }
+
+void UpdateMemory(char *name){
+
+  FILE *F = Fopen(name, "r");
+  int i = 0, c;
+  char mark[3];
+
+  fprintf(stderr, "Reading file %s ...\n", name);
+    
+  while((c = fgetc(F)) != EOF && i < 3){
+    mark[i++] = c;
+    }
+
+  if(mark[0] != '#' || mark[1] != 'M' || mark[2] != ':'){
+    fprintf(stderr, "Error: invalid Mustang file!\n");
+    exit(1);
+    }
+
+  // FILE IS VALID AND EXISTS
+
+  
+
+  fclose(F);
+
+  return;
+  }
+
 void InitBoard(BOARD *B){
   
   B->matrix[7][0] = 't'; B->matrix[7][1] = 'h'; B->matrix[7][2] = 'b'; B->matrix[7][3] = 'q';
@@ -149,17 +189,17 @@ void VisualizeBoard(BOARD *B){
   "    +---+---+---+---+---+---+---+---+        +---+---+---+---+---+---+---+---+ \n"
   "                                                                             \n"
   "      A | B | C | D | E | F | G | H            A | B | C | D | E | F | G | H   \n"
-  "                                       \n"
-  "                                       \n"
-  "                 Legend:               \n"
-  "                                       \n"
-  "               p,P - Pawn,             \n"
-  "               h,H - Horse,            \n"
-  "               b,B - Bishop,           \n"
-  "               t,T - Tower,            \n"
-  "               q,Q - Queen,            \n"
-  "               k,K - King.             \n"
-  "                                       \n",
+  "                                                                               \n"
+  "                                                                               \n"
+  "               Board side:                                Legend:              \n"
+  "                                                                               \n"
+  "                  %s                                 p,P - Pawn,               \n"
+  "                                                        h,H - Horse,           \n"
+  "              (%c,%c,%c,%c,%c,%c)                             b,B - Bishop,    \n"
+  "                                                        t,T - Tower,           \n"
+  "                                                        q,Q - Queen,           \n"
+  "                                                        k,K - King.            \n"
+  "                                                                               \n",
   B->matrix[7][0], B->matrix[7][1], B->matrix[7][2], B->matrix[7][3],   
   B->matrix[7][4], B->matrix[7][5], B->matrix[7][6], B->matrix[7][7],
 
@@ -220,7 +260,16 @@ void VisualizeBoard(BOARD *B){
   B->matrix[0][4], B->matrix[0][5], B->matrix[0][6], B->matrix[0][7],
 
   B->matrix[7][7], B->matrix[7][6], B->matrix[7][5], B->matrix[7][4],
-  B->matrix[7][3], B->matrix[7][2], B->matrix[7][1], B->matrix[7][0]);
+  B->matrix[7][3], B->matrix[7][2], B->matrix[7][1], B->matrix[7][0],
+
+  B->side ? "White" : "Black", 
+  
+  B->side ? 'P' : 'p',
+  B->side ? 'H' : 'h',
+  B->side ? 'B' : 'b',
+  B->side ? 'T' : 't',
+  B->side ? 'Q' : 'q',
+  B->side ? 'K' : 'k');
 
   return;
   }
@@ -315,6 +364,8 @@ int main(int argc, char *argv[]){
     " Error: Unknown argument! Use [0,7] interval!   \n"
     "                                                \n");
     }
+
+  UpdateMemory(P->storage);
 
   return EXIT_SUCCESS;
   }
